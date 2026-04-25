@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasks — OpsPilot</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-header-logo" href="index.html"><span class="logo-ops">Ops</span><span class="logo-pilot">Pilot</span></a>
+  <div class="header-search">
+    <input type="text" id="header-doc-search" placeholder="Search docs…" autocomplete="off" />
+    <div id="header-search-results" class="header-search-results" style="display:none;"></div>
+  </div>
+  <nav class="site-header-nav">
+    <a href="getting-started.html">Docs</a>
+    <a href="workflows.html">Workflows</a>
+    <a href="faq.html">FAQ</a>
+    <a href="https://apps.shopify.com/" class="header-btn">Install App</a>
+  </nav>
+</header>
+
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a class="logo" href="index.html"><span class="back-arrow">&lsaquo;</span> OpsPilot Help Center</a>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="doc-search" placeholder="Search docs…" autocomplete="off" />
+    <div id="search-results" class="search-results" style="display:none;"></div>
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <div class="section-label">Getting Started</div>
+    <a href="getting-started.html">Getting Started</a>
+    <div class="section-label">Features</div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="notes.html">Notes</a>
+    <a href="tasks.html" class="active">Tasks</a>
+    <div class="nav-tree">
+      <a href="workflows.html">Workflows</a>
+      <div class="tree-branch">
+        <div class="tree-node">
+          <a href="workflows.html#event-based-triggers" class="tree-toggle" onclick="toggleTree(this)">
+            <span class="tree-arrow">&#9656;</span> Event-based
+          </a>
+          <div class="tree-children">
+            <a href="workflows.html#event-based-triggers">Triggers</a>
+            <a href="workflows.html#conditions">Conditions</a>
+            <a href="workflows.html#actions">Actions</a>
+            <a href="template-variables.html">Template Variables</a>
+            <a href="workflows.html#delayed-actions">Delayed Actions</a>
+            <a href="workflows.html#deduplication">Deduplication</a>
+          </div>
+        </div>
+        <div class="tree-node">
+          <a href="workflows.html#scheduled-workflows" class="tree-toggle" onclick="toggleTree(this)">
+            <span class="tree-arrow">&#9656;</span> Scheduled
+          </a>
+          <div class="tree-children">
+            <a href="workflows.html#scheduled-trigger">Scheduled Trigger</a>
+            <a href="workflows.html#scheduled-workflows">Scheduled Workflows</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a href="activity.html">Activity History</a>
+    <div class="section-label">Configuration</div>
+    <a href="settings.html">Settings</a>
+    <a href="integrations.html">Integrations</a>
+    <div class="section-label">Help</div>
+    <a href="faq.html">FAQ &amp; Troubleshooting</a>
+    <a href="troubleshooting.html">Advanced Troubleshooting</a>
+    <a href="api-reference.html">API Reference</a>
+  </nav>
+</aside>
+
+<div class="main">
+  <button class="hamburger" onclick="toggleSidebar()">&#9776;</button>
+  <div class="content">
+
+    <div class="section-hero">
+      <h1>Tasks</h1>
+      <div class="last-updated">Last updated on 10 April 2026</div>
+      <p>Track what needs to be done, who's responsible, and when it's due. Create tasks manually, from notes, or automatically via workflows.</p>
+    </div>
+
+    <!-- Hero Showcase -->
+    <div class="pro-showcase">
+      <div class="pro-showcase-header">
+        <div class="pro-showcase-logo">OpsPilot</div>
+        <div class="pro-showcase-title">Track Every Action.</div>
+        <div class="pro-showcase-subtitle">Assign, prioritize, and complete tasks — manually or auto-created by workflows.</div>
+      </div>
+      <div class="pro-showcase-grid cols-3">
+        <div class="pro-card">
+          <img class="pro-card-img" src="images/dashboard/Screenshot%202026-04-08%20183912.png" alt="Today's tasks dashboard card showing open and overdue counts" loading="lazy" />
+          <div class="pro-card-body">
+            <div class="pro-card-label">Today's Tasks</div>
+            <p class="pro-card-desc">See open and overdue task counts at a glance from the dashboard.</p>
+          </div>
+        </div>
+        <div class="pro-card">
+          <img class="pro-card-img" src="images/dashboard/Screenshot%202026-04-08%20183943.png" alt="Open tasks by priority — bar chart showing Low, Medium, High, Urgent" loading="lazy" />
+          <div class="pro-card-body">
+            <div class="pro-card-label">Priority Breakdown</div>
+            <p class="pro-card-desc">Visual bar chart showing tasks grouped by priority level — Low, Medium, High, Urgent.</p>
+          </div>
+        </div>
+        <div class="pro-card">
+          <img class="pro-card-img" src="images/dashboard/Screenshot%202026-04-08%20184004.png" alt="Staff tasks table — assignee, open tasks, overdue tasks" loading="lazy" />
+          <div class="pro-card-body">
+            <div class="pro-card-label">Team Workload</div>
+            <p class="pro-card-desc">Staff tasks table shows each team member's open and overdue task count.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="creating-a-task">Creating a Task</h2>
+    <div class="steps">
+      <div class="step"><div class="step-content">Click <strong>Tasks</strong> in the sidebar</div></div>
+      <div class="step"><div class="step-content">Click the <strong>Create Task</strong> button</div></div>
+      <div class="step"><div class="step-content">Fill in the <strong>Title</strong>, choose a <strong>Priority</strong>, set a <strong>Due Date</strong>, and optionally <strong>Assign To</strong> a team member</div></div>
+      <div class="step"><div class="step-content">Add a <strong>Description</strong> with detailed instructions (supports rich text)</div></div>
+      <div class="step"><div class="step-content">Click <strong>Save</strong></div></div>
+    </div>
+
+    <!-- Task Form Showcase -->
+    <div class="pro-showcase">
+      <div class="pro-showcase-grid cols-1">
+        <div class="pro-card">
+          <img class="pro-card-img" src="images/ation_informations.png" alt="Task form — title, description, priority, status, assignee, due date offset" loading="lazy" />
+          <div class="pro-card-body">
+            <div class="pro-card-label">Task Form Fields</div>
+            <p class="pro-card-desc">Every task includes a title, rich-text description, priority level (Low–Urgent), status, assignee, and due date offset.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="priority-levels">Priority Levels</h2>
+    <table>
+      <thead><tr><th>Priority</th><th>When to Use</th><th>Badge</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Low</strong></td><td>Nice-to-have, no rush</td><td><span class="badge badge-green">Low</span></td></tr>
+        <tr><td><strong>Medium</strong></td><td>Should be done soon</td><td><span class="badge badge-yellow">Medium</span></td></tr>
+        <tr><td><strong>High</strong></td><td>Important, needs attention this week</td><td><span class="badge badge-orange">High</span></td></tr>
+        <tr><td><strong>Urgent</strong></td><td>Drop everything and handle this now</td><td><span class="badge badge-red">Urgent</span></td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="task-statuses">Task Statuses</h2>
+    <table>
+      <thead><tr><th>Status</th><th>Meaning</th><th>Closed?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Pending</strong></td><td>Task hasn't been started yet</td><td>No</td></tr>
+        <tr><td><strong>In Progress</strong></td><td>Someone is working on it</td><td>No</td></tr>
+        <tr><td><strong>On Hold</strong></td><td>Paused — waiting for something</td><td>No</td></tr>
+        <tr><td><strong>Completed</strong></td><td>Task is done ?</td><td>Yes</td></tr>
+        <tr><td><strong>Cancelled</strong></td><td>Task was cancelled</td><td>Yes</td></tr>
+        <tr><td><strong>Archived</strong></td><td>Old task moved to archive</td><td>Yes</td></tr>
+      </tbody>
+    </table>
+    <p>Your admin can create <strong><a href="settings.html#creating-custom-statuses">custom statuses</a></strong> in <a href="settings.html">Settings</a> (e.g., "Waiting for Customer", "Under Review").</p>
+
+    <!-- Task Statuses Showcase -->
+    <div class="pro-showcase">
+      <div class="pro-showcase-grid cols-2">
+        <div class="pro-card">
+          <img class="pro-card-img" src="images/settings/Screenshot%202026-04-08%20181909.png" alt="Task statuses settings — Pending, In Progress, Completed, Cancelled, On Hold, Archived with Enable/Disable toggles" loading="lazy" />
+          <div class="pro-card-body">
+            <div class="pro-card-label">Built-in Statuses</div>
+            <p class="pro-card-desc">Six built-in statuses with Open/Closed classification. Disable unused statuses to hide them from forms.</p>
+          </div>
+        </div>
+        <div class="pro-card">
+          <img class="pro-card-img" src="images/settings/Screenshot%202026-04-08%20181809.png" alt="Task preferences — default assignment, default view, dashboard date range, scheduled timezone" loading="lazy" />
+          <div class="pro-card-body">
+            <div class="pro-card-label">Task Preferences</div>
+            <p class="pro-card-desc">Configure default assignment, default view (Table/Kanban), dashboard date range, and scheduled workflow timezone.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="table-view">Table View</h2>
+    <p>The default view shows tasks in a table with columns for title, status, priority, assignee, due date, and created date. Click column headers to sort.</p>
+
+    <h2 id="kanban-board-view">Kanban Board View</h2>
+    <p>Switch to the Kanban view for a visual board — tasks appear as cards organized by status. <strong>Drag and drop</strong> cards between columns to change their status.</p>
+
+    <div class="callout callout-tip">
+      <span class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b873e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span>
+      <div>To set the default view for your store, go to <strong><a href="settings.html#default-view">Settings ? Task Preferences ? Default View</a></strong>.</div>
+    </div>
+
+    <h2 id="task-timeline">Task Timeline</h2>
+    <p>Every task has a timeline that shows its full history — when it was created, every status change, every edit, and if it was created by a <a href="workflows.html">workflow</a> (shows which workflow and what triggered it).</p>
+
+    <h2 id="linking-tasks-to-notes">Linking Tasks to Notes</h2>
+    <p>Tasks and <a href="notes.html">notes</a> can be connected. When creating a task, search for existing notes to link in the <strong>Notes</strong> section. You can also <a href="notes.html#converting-notes-to-tasks">convert notes to tasks</a> from the Notes page.</p>
+
+    <h2 id="auto-created-tasks">Auto-Created Tasks (From Workflows)</h2>
+    <p>When a <a href="workflows.html">workflow</a> has a "<a href="workflows.html#create-task">Create Task</a>" action, tasks are created automatically. These tasks show an <strong>"Auto-created"</strong> badge and include a timeline entry showing which workflow created them.</p>
+
+    <!-- Auto-Created Tasks Showcase -->
+    <div class="pro-showcase">
+      <div class="pro-showcase-header">
+        <div class="pro-showcase-title">How Workflows Auto-Create Tasks</div>
+        <div class="pro-showcase-subtitle">Set a trigger, define conditions, and let OpsPilot create tasks automatically.</div>
+      </div>
+      <div class="pro-flow">
+        <div class="pro-flow-step">
+          <div class="pro-flow-badge when">When</div>
+          <div class="pro-flow-card">
+            <img src="images/chous_the_triger_action_.png" alt="Trigger selection — Order created, Checkout abandoned, Inventory level, etc." loading="lazy" />
+            <div class="pro-card-body">
+              <div class="pro-card-label">Choose Trigger</div>
+              <p class="pro-card-desc">Select an event: Order created, Checkout abandoned, Inventory level change, and more.</p>
+            </div>
+          </div>
+        </div>
+        <div class="pro-flow-step">
+          <div class="pro-flow-badge if">If</div>
+          <div class="pro-flow-card">
+            <img src="images/add_a_condetion_to_the_workflow_.png" alt="Condition builder — add conditions to filter when the workflow runs" loading="lazy" />
+            <div class="pro-card-body">
+              <div class="pro-card-label">Add Conditions</div>
+              <p class="pro-card-desc">Filter by order total, tags, financial status, or define custom field paths.</p>
+            </div>
+          </div>
+        </div>
+        <div class="pro-flow-step">
+          <div class="pro-flow-badge then">Then</div>
+          <div class="pro-flow-card">
+            <img src="images/the_action_tipe_.png" alt="Action type dropdown — Create task selected" loading="lazy" />
+            <div class="pro-card-body">
+              <div class="pro-card-label">Create Task</div>
+              <p class="pro-card-desc">Auto-creates a task with title, description, priority, and assignee from template variables.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="filtering-searching">Filtering &amp; Searching</h2>
+    <table>
+      <thead><tr><th>Filter</th><th>Options</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Status</strong></td><td>Any, Pending, In Progress, Completed, etc.</td></tr>
+        <tr><td><strong>Priority</strong></td><td>Low, Medium, High, Urgent</td></tr>
+        <tr><td><strong>Assigned To</strong></td><td>Specific team member or Unassigned</td></tr>
+        <tr><td><strong>Due Date</strong></td><td>Date range filter</td></tr>
+        <tr><td><strong>Show</strong></td><td>Open tasks, Overdue tasks, All tasks</td></tr>
+      </tbody>
+    </table>
+
+    <div class="page-nav">
+      <a class="page-nav-btn page-nav-prev" href="notes.html"><span class="nav-label">&#8592; Previous</span>Notes</a>
+      <a class="page-nav-btn page-nav-next" href="workflows.html"><span class="nav-label">Next &#8594;</span>Workflows </a>
+    </div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-brand">
+      <a class="footer-logo" href="index.html"><span>Ops</span><span class="logo-pilot">Pilot</span></a>
+      <p>Shopify automation &amp; task management. Workflows, alerts, and operations in one command center.</p>
+    </div>
+    <div class="site-footer-links">
+      <div>
+        <span class="footer-heading">Docs</span>
+        <a href="getting-started.html">Getting Started</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="workflows.html">Workflows</a>
+        <a href="tasks.html">Tasks</a>
+      </div>
+      <div>
+        <span class="footer-heading">Help</span>
+        <a href="faq.html">FAQ</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+        <a href="api-reference.html">API Reference</a>
+      </div>
+    </div>
+  </div>
+  <div class="site-footer-bottom">&copy; 2026 OpsPilot. All rights reserved.</div>
+</footer>
+
+<script src="nav.js"></script>
+<!-- Crisp Live Chat -->
+<script type="text/javascript">
+  window.$crisp=[];window.CRISP_WEBSITE_ID="6f9ec4d1-3401-45af-af1c-9f0f0315773c";
+  (function(){var d=document;var s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();
+</script>
+</body>
+</html>

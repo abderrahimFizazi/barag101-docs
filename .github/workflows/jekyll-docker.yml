@@ -1,0 +1,19 @@
+name: Static site CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Verify site files exist
+      run: |
+        test -f index.html && echo "index.html OK"
+        test -f styles.css && echo "styles.css OK"
