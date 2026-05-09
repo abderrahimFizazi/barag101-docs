@@ -102,7 +102,7 @@ var SEARCH_INDEX = [
   // FAQ
   { title: 'FAQ & Troubleshooting', url: 'faq.html', section: '', desc: 'Common questions about notes, tasks, workflows, and setup' },
   { title: 'Workflow Not Triggering', url: 'faq.html#workflow-not-triggering', section: 'FAQ', desc: 'Check active status, conditions, trigger type, plan limits, and failures' },
-  { title: 'Emails Not Being Sent', url: 'faq.html#emails-not-sent', section: 'FAQ', desc: 'Email integration, DNS verification, plan requirement, deduplication' },
+  { title: 'Emails Not Being Sent', url: 'faq.html#emails-not-sent', section: 'FAQ', desc: 'Email integration, DNS verification, setup, deduplication' },
   { title: 'Paused Due to Failure', url: 'faq.html#paused-due-to-failure', section: 'FAQ', desc: 'Fix failed workflows and re-enable them' },
   // Advanced Troubleshooting
   { title: 'Advanced Troubleshooting', url: 'troubleshooting.html', section: '', desc: 'Detailed error codes, integration debugging, rate limits, recovery steps' },

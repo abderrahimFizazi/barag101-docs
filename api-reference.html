@@ -207,19 +207,19 @@
     <h2 id="plan-limits">Plan Limits</h2>
 
     <table>
-      <thead><tr><th>Feature</th><th>FREE</th><th>STARTER</th><th>GROWTH</th></tr></thead>
+      <thead><tr><th>Feature</th><th>FREE LAUNCH</th></tr></thead>
       <tbody>
-        <tr><td>Active workflows</td><td>5</td><td>5</td><td>20</td></tr>
-        <tr><td>Workflow runs / month</td><td>5,000</td><td>5,000</td><td>20,000</td></tr>
-        <tr><td>Actions per workflow</td><td>3</td><td>3</td><td>10</td></tr>
-        <tr><td>Email action</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
-        <tr><td>Slack action</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
-        <tr><td>Google Sheets action</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
-        <tr><td>Analytics dashboard</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
+        <tr><td>Active workflows</td><td>5</td></tr>
+        <tr><td>Workflow runs / month</td><td>5,000</td></tr>
+        <tr><td>Actions per workflow</td><td>3</td></tr>
+        <tr><td>Email action</td><td>&#10003; after setup</td></tr>
+        <tr><td>Slack action</td><td>&#10003; after setup</td></tr>
+        <tr><td>Google Sheets action</td><td>&#10003; after setup</td></tr>
+        <tr><td>Analytics dashboard</td><td>&#10003;</td></tr>
       </tbody>
     </table>
 
-    <p>New shops start on Free. The first confirmed paid Shopify subscription can include a <strong>15-day trial</strong> if not previously used. After the trial, the paid subscription continues through Shopify Billing unless the merchant downgrades. Plan limits are enforced on every workflow execution - runs over the monthly limit are SKIPPED.</p>
+    <p>When billing enforcement is disabled for launch, new shops use the free launch limits above and no Shopify subscription is created. Plan limits are enforced on every workflow execution - runs over the monthly limit are SKIPPED.</p>
 
     <h2 id="edge-cases">Edge Cases &amp; Special Flows</h2>
 
@@ -232,7 +232,7 @@
         <tr><td>Monthly run limit exceeded</td><td>Workflow SKIPPED - checked before conditions</td></tr>
         <tr><td>No active users in shop</td><td>Execution halted with error</td></tr>
         <tr><td>Recursive workflow depth &gt; 2</td><td>Workflow SKIPPED with warning</td></tr>
-        <tr><td>All actions filtered by plan/setup</td><td>Workflow SKIPPED (not FAILED)</td></tr>
+        <tr><td>All actions filtered by setup/eligibility</td><td>Workflow SKIPPED (not FAILED)</td></tr>
         <tr><td>Payload &gt;50KB</td><td>Truncated to summary (<code>_truncated: true</code>)</td></tr>
         <tr><td>Delayed workflow - workflow deleted/disabled before execution</td><td>Action SKIPPED</td></tr>
         <tr><td>Delayed workflow - conditions no longer match at execution time</td><td>Action SKIPPED</td></tr>
@@ -251,10 +251,9 @@
         <tr><td>App already installed - user re-opens</td><td>Existing session reused; no new OAuth flow</td></tr>
         <tr><td>Uninstall webhook fires multiple times</td><td>Safe - checks if session exists before deleting</td></tr>
         <tr><td>User re-opens app after uninstall</td><td>Full OAuth flow restarts</td></tr>
-        <tr><td>Trial already used on previous paid plan</td><td>No repeat trial on later paid plan requests</td></tr>
-        <tr><td>Multiple paid Shopify subscriptions</td><td>Highest tier wins</td></tr>
-        <tr><td>Paid plan in DB but no active Shopify subscription</td><td>Triggers immediate downgrade</td></tr>
-        <tr><td>Upgrade before scheduled downgrade date</td><td>Cancels the scheduled downgrade</td></tr>
+        <tr><td>Free launch mode enabled</td><td>Billing actions are hidden and all launch integrations are available after setup</td></tr>
+        <tr><td>Direct billing POST during launch</td><td>Request is rejected with a free launch message</td></tr>
+        <tr><td>Stored legacy plan from older data</td><td>Runtime entitlements still resolve to the free launch plan while billing enforcement is disabled</td></tr>
       </tbody>
     </table>
 
@@ -288,7 +287,7 @@
     <ul>
       <li>Seeds two onboarding tasks: "Connect Slack and Google Sheets" (HIGH) and "Set up email sender and branding" (MEDIUM) - these use unique markers to prevent duplicates on re-install</li>
       <li>Creates a welcome note (marker: <code>onboarding:welcome-note:v1</code>)</li>
-      <li>Keeps new installs on Free until the merchant confirms a paid plan through Shopify Billing</li>
+      <li>Keeps new installs on the free launch plan with no Shopify subscription required</li>
       <li>Auto-opens the onboarding drawer if: no active workflows AND no non-onboarding open tasks</li>
     </ul>
 

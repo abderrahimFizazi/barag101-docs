@@ -12,7 +12,7 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 6. [Workflow Automation](#6-workflow-automation)
 7. [Integrations](#7-integrations)
 8. [Settings](#8-settings)
-9. [Billing & Plans](#9-billing--plans)
+9. [Free Launch Plan](#9-free-launch-plan)
 10. [Activity History](#10-activity-history)
 11. [API Endpoints](#11-api-endpoints)
 12. [Edge Cases & Special Flows](#12-edge-cases--special-flows)
@@ -66,14 +66,13 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
   - "Connect Slack and Google Sheets" (HIGH priority)
   - "Set up email sender and branding" (MEDIUM priority)
 - A welcome note is created (marker: `onboarding:welcome-note:v1`).
-- Starter/Growth trials start when the merchant confirms a paid plan through Shopify Billing.
+- Free launch access starts immediately after install; no Shopify subscription is required.
 - Onboarding drawer auto-opens if: `activeWorkflowsCount === 0` AND `nonOnboardingOpenTasksCount === 0`.
 
 ### Edge Cases
 
 - Onboarding tasks use unique markers to prevent duplicates on re-install.
-- If a shop has previously used a trial (`billingTrialUsed === true`), paid plan requests are sent without another trial.
-- If billing is globally disabled, all shops get configured free-mode limits without billing (Starter-sized by default).
+- When billing is globally disabled, all shops get configured free-mode limits without billing.
 
 ---
 
@@ -279,15 +278,15 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 
 - `SUCCESS` — action completed.
 - `FAILED` — permanent failure (logged, not retried unless transient).
-- `SKIPPED` — action not eligible (plan restriction, dedup, disabled integration).
+- `SKIPPED` — action not eligible (setup restriction, dedup, disabled integration).
 - `QUEUED` — delayed action queued for later execution.
 
-#### Plan-Based Action Filtering:
+#### Action Eligibility Filtering:
 
-- Integrations (Email, Slack, Google Sheets) are gated by plan tier.
-- FREE plan: no integration actions allowed.
+- Integrations (Email, Slack, Google Sheets) are included during free launch after setup.
+- Missing or invalid integration setup can make an action ineligible.
 - If ALL actions are filtered, workflow is marked `SKIPPED`.
-- Filtered actions are logged with reason: "plan" or "setup".
+- Filtered actions are logged with reason: "setup" or another eligibility reason.
 
 #### Execution Depth Guard:
 
@@ -493,47 +492,43 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 #### Billing
 
 - View current plan and features.
-- Upgrade or downgrade plans.
-- See trial status and expiry.
+- Review free launch limits and included access.
+- Confirm no plan change action is required during launch.
 
 ---
 
-## 9. Billing & Plans
+## 9. Free Launch Plan
 
-### Plans
+### Launch Limits
 
-| Feature | FREE | STARTER | GROWTH |
-|---------|------|---------|--------|
-| Active workflows | 5 | 5 | 20 |
-| Workflow runs/month | 5,000 | 5,000 | 20,000 |
-| Actions per workflow | 3 | 3 | 10 |
-| Email action | ✗ | ✓ | ✓ |
-| Slack action | ✗ | ✓ | ✓ |
-| Google Sheets action | ✗ | ✓ | ✓ |
-| Analytics | ✗ | ✓ | ✓ |
+| Feature | FREE LAUNCH |
+|---------|-------------|
+| Active workflows | 5 |
+| Workflow runs/month | 5,000 |
+| Actions per workflow | 3 |
+| Email action | Included after setup |
+| Slack action | Included after setup |
+| Google Sheets action | Included after setup |
+| Analytics | Included |
 
-**Note**: Limits are environment-configurable via `APP_PLAN_*_*` env vars and must be positive integers.
+**Note**: Free launch limits are environment-configurable via `APP_FREE_MODE_*` env vars and must be positive integers.
 
-### Trial Management
+### Launch Billing State
 
-- First paid Shopify subscription includes a 15-day trial if `billingTrialUsed === false`.
-- Trial start date is computed from the first Shopify subscription's `createdAt`.
-- Invalid dates (NaN) fall back to current date.
-- After trial ends: plan reverts to FREE unless subscription continues.
+- `APP_BILLING_ENABLED=false` keeps the app in free launch mode.
+- The Billing page shows the current free plan and hides plan change buttons.
+- Direct billing POSTs are rejected with a free launch message.
+- No Shopify subscription or app charge is created.
 
 ### Plan Sync (syncShopPlanFromBilling)
 
-- Runs on every app load.
-- Multiple paid subscriptions → picks highest tier.
-- Out-of-sync state (paid in DB, no active Shopify subscriptions) → triggers downgrade.
-- Grace period: if local trial is still active, keeps paid tier until trial also expires.
+- Runtime entitlements resolve to free launch limits while billing enforcement is disabled.
+- Stored historical plan fields do not change launch-mode access.
 
-### Downgrade Flow
+### Plan Change Flow
 
-- **Immediate downgrade**: ALL active workflows auto-disabled.
-- **Scheduled downgrade**: target plan + effective date stored; no immediate effect.
-- Applied only if `effectiveDate > now` AND `newPlanRank < currentPlanRank`.
-- Upgrade before effective date cancels the scheduled downgrade.
+- No merchant plan change is required during launch.
+- Plan management remains hidden until billing is reintroduced.
 
 ---
 
@@ -569,13 +564,11 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 
 | Scenario | Behavior |
 |----------|----------|
-| Trial already used | No repeat trial on later paid plan requests |
-| Trial end date invalid (NaN) | Falls back to current date |
-| Multiple paid Shopify subscriptions | Highest tier wins |
-| Shop has paid plan in DB but no active Shopify subscription | Triggers downgrade |
-| Upgrade before scheduled downgrade date | Cancels scheduled downgrade |
+| Free launch mode enabled | Billing actions are hidden; launch integrations are available after setup |
+| Direct billing POST during launch | Request is rejected with a free launch message |
+| Historical plan value exists | Runtime entitlements still resolve to free launch limits |
 | Plan limits from env vars are not positive integers | Default limits applied |
-| FREE_MODE (billing disabled) | Billing actions disabled; app uses configured free-mode limits |
+| FREE_MODE (billing disabled) | App uses configured free-mode limits without billing |
 
 ### 12.2 Workflow Execution Edge Cases
 
@@ -586,7 +579,7 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 | Monthly run limit exceeded | Workflow SKIPPED (logged), checked BEFORE conditions |
 | No active users in shop | Execution halted with error (cannot resolve default user) |
 | Recursive workflow (depth > 2) | Workflow SKIPPED with warning |
-| All actions filtered by plan/setup | Workflow SKIPPED (not FAILED) |
+| All actions filtered by setup/eligibility | Workflow SKIPPED (not FAILED) |
 | Payload >50KB | Truncated to summary (_truncated: true) |
 | Payload unserializable | Marked _unserializable: true |
 | Delayed workflow — workflow deleted/disabled before execution | Action SKIPPED |
@@ -700,7 +693,7 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 - Monthly run limit exceeded
 - Dedup window active for action
 - Workflow disabled/deleted before delayed execution
-- All actions filtered by plan or missing setup
+- All actions filtered by eligibility or missing setup
 - Operator user not found for email recipient
 
 ---
@@ -708,7 +701,7 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 ## Verification Plan
 
 - Walk through each route in `app/routes/` and confirm each section of this doc is reflected.
-- Check `planLimits.ts` to confirm plan tiers match documented limits.
+- Check `planLimits.ts` to confirm free launch limits match documented limits.
 - Run the workflow engine tests in `__tests__/` to confirm edge case behavior.
 - Install the app in a dev shop and trace the onboarding flow.
 - Trigger each integration (Slack, Email, Sheets) with a test workflow to verify error messages.

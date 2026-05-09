@@ -181,7 +181,7 @@
         <tr>
           <td><strong>Monthly run limit exceeded</strong></td>
           <td>Log shows "Monthly quota exceeded"</td>
-          <td>Upgrade your plan or wait for the quota to reset at the start of next month</td>
+          <td>Deactivate lower-priority workflows or wait for the quota to reset at the start of next month</td>
         </tr>
         <tr>
           <td><strong>Deduplication window active</strong></td>
@@ -189,9 +189,9 @@
           <td>Expected behavior - same payload won't fire again for 24 hours. See <a href="workflows.html#deduplication">Deduplication</a></td>
         </tr>
         <tr>
-          <td><strong>All actions filtered by plan</strong></td>
-          <td>Log shows "Action skipped: plan restriction"</td>
-          <td>Email, Slack, and Sheets actions require Starter or Growth. Upgrade or replace with Create Task</td>
+          <td><strong>Integration action not configured</strong></td>
+          <td>Log shows the integration setup is missing or invalid</td>
+          <td>Configure Email, Slack, or Sheets in Settings, or replace the action with Create Task</td>
         </tr>
         <tr>
           <td><strong>Workflow disabled/deleted before delayed execution</strong></td>
@@ -292,9 +292,9 @@
       <thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
       <tbody>
         <tr>
-          <td>Email action SKIPPED: "plan restriction"</td>
-          <td>Email actions require Starter or Growth plan</td>
-          <td>Upgrade your plan</td>
+          <td>Email action SKIPPED: setup missing</td>
+          <td>Email integration is not configured or verified</td>
+          <td>Complete Email setup in Settings</td>
         </tr>
         <tr>
           <td>Action FAILED after multiple retries</td>
@@ -420,7 +420,7 @@
         <tr>
           <td><strong>Skipped (not a failure)</strong></td>
           <td>Logged as SKIPPED, no retry needed</td>
-          <td>Conditions not met, quota exceeded, dedup window, plan restriction, operator user not found</td>
+          <td>Conditions not met, quota exceeded, dedup window, integration setup restriction, operator user not found</td>
         </tr>
       </tbody>
     </table>
