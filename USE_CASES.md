@@ -66,14 +66,14 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
   - "Connect Slack and Google Sheets" (HIGH priority)
   - "Set up email sender and branding" (MEDIUM priority)
 - A welcome note is created (marker: `onboarding:welcome-note:v1`).
-- Starter trial auto-starts if eligible (`billingTrialUsed === false`).
+- Starter/Growth trials start when the merchant confirms a paid plan through Shopify Billing.
 - Onboarding drawer auto-opens if: `activeWorkflowsCount === 0` AND `nonOnboardingOpenTasksCount === 0`.
 
 ### Edge Cases
 
 - Onboarding tasks use unique markers to prevent duplicates on re-install.
-- If a shop has previously used a trial (`billingTrialUsed === true`), no trial is auto-started.
-- If billing is globally disabled, all shops get STARTER limits without billing.
+- If a shop has previously used a trial (`billingTrialUsed === true`), paid plan requests are sent without another trial.
+- If billing is globally disabled, all shops get configured free-mode limits without billing (Starter-sized by default).
 
 ---
 
@@ -504,9 +504,9 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 
 | Feature | FREE | STARTER | GROWTH |
 |---------|------|---------|--------|
-| Active workflows | 1 | 5 | 20 |
-| Workflow runs/month | 10 | 500 | 5,000 |
-| Actions per workflow | 2 | 10 | 20 |
+| Active workflows | 5 | 5 | 20 |
+| Workflow runs/month | 5,000 | 5,000 | 20,000 |
+| Actions per workflow | 3 | 3 | 10 |
 | Email action | ✗ | ✓ | ✓ |
 | Slack action | ✗ | ✓ | ✓ |
 | Google Sheets action | ✗ | ✓ | ✓ |
@@ -516,8 +516,8 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 
 ### Trial Management
 
-- New shops auto-enrolled in 14-day STARTER trial (if `billingTrialUsed === false`).
-- Trial start date computed from first Shopify subscription's `createdAt`.
+- First paid Shopify subscription includes a 15-day trial if `billingTrialUsed === false`.
+- Trial start date is computed from the first Shopify subscription's `createdAt`.
 - Invalid dates (NaN) fall back to current date.
 - After trial ends: plan reverts to FREE unless subscription continues.
 
@@ -569,13 +569,13 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 
 | Scenario | Behavior |
 |----------|----------|
-| Trial already used | No auto-trial on re-install |
+| Trial already used | No repeat trial on later paid plan requests |
 | Trial end date invalid (NaN) | Falls back to current date |
 | Multiple paid Shopify subscriptions | Highest tier wins |
 | Shop has paid plan in DB but no active Shopify subscription | Triggers downgrade |
 | Upgrade before scheduled downgrade date | Cancels scheduled downgrade |
 | Plan limits from env vars are not positive integers | Default limits applied |
-| FREE_MODE (billing disabled) | All shops get STARTER limits |
+| FREE_MODE (billing disabled) | Billing actions disabled; app uses configured free-mode limits |
 
 ### 12.2 Workflow Execution Edge Cases
 
@@ -667,9 +667,9 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 
 | Resource | Limit |
 |----------|-------|
-| Monthly workflow runs (FREE) | Configurable via env, low default |
-| Monthly workflow runs (STARTER) | 500 (env-configurable) |
-| Monthly workflow runs (GROWTH) | 5,000 (env-configurable) |
+| Monthly workflow runs (FREE) | 5,000 by default (env-configurable) |
+| Monthly workflow runs (STARTER) | 5,000 by default (env-configurable) |
+| Monthly workflow runs (GROWTH) | 20,000 by default (env-configurable) |
 | Execution log scan for dedup | Max 1,000 rows, last 24 hours |
 | Dedup check batch size | 100 execution logs |
 | Delayed action batch per cron run | Up to 100 actions |

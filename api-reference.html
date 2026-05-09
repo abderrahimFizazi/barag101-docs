@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API Reference — OpsPilot</title>
+  <title>API Reference - OpsPilot Docs</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="theme-color" content="#323232" />
+  <meta name="application-name" content="OpsPilot Docs" />
 </head>
 <body>
 
@@ -154,11 +160,11 @@
       <tbody>
         <tr><td><code>/api/scheduled-workflows</code></td><td>POST</td><td>QSTASH signing key or <code>CRON_SECRET</code> Bearer token</td><td>Trigger scheduled and delayed workflow execution</td></tr>
         <tr><td><code>/api/item-actions</code></td><td>POST</td><td>CORS (Shopify admin surface)</td><td>Create tasks and notes from Shopify order/product/customer pages via the app extension</td></tr>
-        <tr><td><code>/health</code></td><td>GET</td><td>None</td><td>Health check — returns 200 OK if the service is running</td></tr>
-        <tr><td><code>/ready</code></td><td>GET</td><td>None</td><td>Readiness probe — used by infrastructure to confirm the app is ready to serve traffic</td></tr>
-        <tr><td><code>/webhooks</code></td><td>POST</td><td>Shopify HMAC signature</td><td>Generic Shopify webhook receiver — routes to appropriate handler by topic</td></tr>
-        <tr><td><code>/webhooks/app/scopes_update</code></td><td>POST</td><td>Shopify HMAC</td><td>Registered but not yet implemented — scope changes do not trigger any action</td></tr>
-        <tr><td><code>/webhooks/app/uninstalled</code></td><td>POST</td><td>Shopify HMAC</td><td>App uninstall webhook — removes all sessions for the shop</td></tr>
+        <tr><td><code>/health</code></td><td>GET</td><td>None</td><td>Health check - returns 200 OK if the service is running</td></tr>
+        <tr><td><code>/ready</code></td><td>GET</td><td>None</td><td>Readiness probe - used by infrastructure to confirm the app is ready to serve traffic</td></tr>
+        <tr><td><code>/webhooks</code></td><td>POST</td><td>Shopify HMAC signature</td><td>Generic Shopify webhook receiver - routes to appropriate handler by topic</td></tr>
+        <tr><td><code>/webhooks/app/scopes_update</code></td><td>POST</td><td>Shopify HMAC</td><td>Registered but not yet implemented - scope changes do not trigger any action</td></tr>
+        <tr><td><code>/webhooks/app/uninstalled</code></td><td>POST</td><td>Shopify HMAC</td><td>App uninstall webhook - removes all sessions for the shop</td></tr>
       </tbody>
     </table>
 
@@ -203,9 +209,9 @@
     <table>
       <thead><tr><th>Feature</th><th>FREE</th><th>STARTER</th><th>GROWTH</th></tr></thead>
       <tbody>
-        <tr><td>Active workflows</td><td>1</td><td>5</td><td>20</td></tr>
-        <tr><td>Workflow runs / month</td><td>Low (env-configurable)</td><td>500</td><td>5,000</td></tr>
-        <tr><td>Actions per workflow</td><td>2</td><td>10</td><td>20</td></tr>
+        <tr><td>Active workflows</td><td>5</td><td>5</td><td>20</td></tr>
+        <tr><td>Workflow runs / month</td><td>5,000</td><td>5,000</td><td>20,000</td></tr>
+        <tr><td>Actions per workflow</td><td>3</td><td>3</td><td>10</td></tr>
         <tr><td>Email action</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
         <tr><td>Slack action</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
         <tr><td>Google Sheets action</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
@@ -213,7 +219,7 @@
       </tbody>
     </table>
 
-    <p>New shops automatically receive a <strong>14-day STARTER trial</strong> on first install (if not previously used). After the trial, the plan reverts to FREE unless a subscription is active. Plan limits are enforced on every workflow execution — runs over the monthly limit are SKIPPED.</p>
+    <p>New shops start on Free. The first confirmed paid Shopify subscription can include a <strong>15-day trial</strong> if not previously used. After the trial, the paid subscription continues through Shopify Billing unless the merchant downgrades. Plan limits are enforced on every workflow execution - runs over the monthly limit are SKIPPED.</p>
 
     <h2 id="edge-cases">Edge Cases &amp; Special Flows</h2>
 
@@ -223,17 +229,17 @@
       <tbody>
         <tr><td>Payload is not a valid object</td><td>Workflow SKIPPED with warning</td></tr>
         <tr><td>Condition schema invalid</td><td>Workflow FAILED ("Invalid workflow definition")</td></tr>
-        <tr><td>Monthly run limit exceeded</td><td>Workflow SKIPPED — checked before conditions</td></tr>
+        <tr><td>Monthly run limit exceeded</td><td>Workflow SKIPPED - checked before conditions</td></tr>
         <tr><td>No active users in shop</td><td>Execution halted with error</td></tr>
         <tr><td>Recursive workflow depth &gt; 2</td><td>Workflow SKIPPED with warning</td></tr>
         <tr><td>All actions filtered by plan/setup</td><td>Workflow SKIPPED (not FAILED)</td></tr>
         <tr><td>Payload &gt;50KB</td><td>Truncated to summary (<code>_truncated: true</code>)</td></tr>
-        <tr><td>Delayed workflow — workflow deleted/disabled before execution</td><td>Action SKIPPED</td></tr>
-        <tr><td>Delayed workflow — conditions no longer match at execution time</td><td>Action SKIPPED</td></tr>
+        <tr><td>Delayed workflow - workflow deleted/disabled before execution</td><td>Action SKIPPED</td></tr>
+        <tr><td>Delayed workflow - conditions no longer match at execution time</td><td>Action SKIPPED</td></tr>
         <tr><td>Nested delay (delay within a delayed action)</td><td>Re-queued action SKIPPED</td></tr>
         <tr><td>Concurrent delayed action workers</td><td>Atomic row claim prevents double-processing</td></tr>
         <tr><td>CREATE_ONCE_PER_ENTITY + entity in closed status</td><td>New task created instead of updating</td></tr>
-        <tr><td>24h dedup — same fingerprint detected</td><td>Action SKIPPED unless <code>forceExecuteDuplicates: true</code></td></tr>
+        <tr><td>24h dedup - same fingerprint detected</td><td>Action SKIPPED unless <code>forceExecuteDuplicates: true</code></td></tr>
         <tr><td>Aggregate scheduled workflow</td><td>One task per entity; entity ID = <code>workflow-aggregate:${workflowId}</code></td></tr>
       </tbody>
     </table>
@@ -242,10 +248,10 @@
     <table>
       <thead><tr><th>Scenario</th><th>Behavior</th></tr></thead>
       <tbody>
-        <tr><td>App already installed — user re-opens</td><td>Existing session reused; no new OAuth flow</td></tr>
-        <tr><td>Uninstall webhook fires multiple times</td><td>Safe — checks if session exists before deleting</td></tr>
+        <tr><td>App already installed - user re-opens</td><td>Existing session reused; no new OAuth flow</td></tr>
+        <tr><td>Uninstall webhook fires multiple times</td><td>Safe - checks if session exists before deleting</td></tr>
         <tr><td>User re-opens app after uninstall</td><td>Full OAuth flow restarts</td></tr>
-        <tr><td>Trial already used on previous install</td><td>No auto-trial on re-install</td></tr>
+        <tr><td>Trial already used on previous paid plan</td><td>No repeat trial on later paid plan requests</td></tr>
         <tr><td>Multiple paid Shopify subscriptions</td><td>Highest tier wins</td></tr>
         <tr><td>Paid plan in DB but no active Shopify subscription</td><td>Triggers immediate downgrade</td></tr>
         <tr><td>Upgrade before scheduled downgrade date</td><td>Cancels the scheduled downgrade</td></tr>
@@ -272,7 +278,7 @@
         <tr><td>Due date in the past</td><td>Rejected</td></tr>
         <tr><td>Assigned user inactive or from different shop</td><td>Rejected</td></tr>
         <tr><td>Bulk delete by non-admin</td><td>Rejected</td></tr>
-        <tr><td>Auto-archive unit not days or weeks</td><td>Ignored — no archive performed</td></tr>
+        <tr><td>Auto-archive unit not days or weeks</td><td>Ignored - no archive performed</td></tr>
         <tr><td>Task notes on delete</td><td>Soft-deleted, not hard-deleted</td></tr>
       </tbody>
     </table>
@@ -280,9 +286,9 @@
     <h2 id="onboarding">Onboarding Behavior</h2>
     <p>On first install, OpsPilot automatically:</p>
     <ul>
-      <li>Seeds two onboarding tasks: "Connect Slack and Google Sheets" (HIGH) and "Set up email sender and branding" (MEDIUM) — these use unique markers to prevent duplicates on re-install</li>
+      <li>Seeds two onboarding tasks: "Connect Slack and Google Sheets" (HIGH) and "Set up email sender and branding" (MEDIUM) - these use unique markers to prevent duplicates on re-install</li>
       <li>Creates a welcome note (marker: <code>onboarding:welcome-note:v1</code>)</li>
-      <li>Auto-starts a 14-day STARTER trial if <code>billingTrialUsed === false</code></li>
+      <li>Keeps new installs on Free until the merchant confirms a paid plan through Shopify Billing</li>
       <li>Auto-opens the onboarding drawer if: no active workflows AND no non-onboarding open tasks</li>
     </ul>
 
