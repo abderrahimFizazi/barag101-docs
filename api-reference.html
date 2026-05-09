@@ -219,7 +219,7 @@
       </tbody>
     </table>
 
-    <p>When billing enforcement is disabled for launch, new shops use the free launch limits above and no Shopify subscription is created. Plan limits are enforced on every workflow execution - runs over the monthly limit are SKIPPED.</p>
+    <p>New shops use the Free plan limits above, and no Shopify subscription is required. Plan limits are enforced on every workflow execution - runs over the monthly limit are SKIPPED.</p>
 
     <h2 id="edge-cases">Edge Cases &amp; Special Flows</h2>
 
@@ -251,9 +251,9 @@
         <tr><td>App already installed - user re-opens</td><td>Existing session reused; no new OAuth flow</td></tr>
         <tr><td>Uninstall webhook fires multiple times</td><td>Safe - checks if session exists before deleting</td></tr>
         <tr><td>User re-opens app after uninstall</td><td>Full OAuth flow restarts</td></tr>
-        <tr><td>Free launch mode enabled</td><td>Billing actions are hidden and all launch integrations are available after setup</td></tr>
-        <tr><td>Direct billing POST during launch</td><td>Request is rejected with a free launch message</td></tr>
-        <tr><td>Stored legacy plan from older data</td><td>Runtime entitlements still resolve to the free launch plan while billing enforcement is disabled</td></tr>
+        <tr><td>Free plan active</td><td>All Free plan integrations are available after setup</td></tr>
+        <tr><td>Plan change request on Free plan</td><td>Request returns a Free plan message</td></tr>
+        <tr><td>Stored legacy plan from older data</td><td>Runtime entitlements resolve to the Free plan</td></tr>
       </tbody>
     </table>
 
@@ -287,7 +287,7 @@
     <ul>
       <li>Seeds two onboarding tasks: "Connect Slack and Google Sheets" (HIGH) and "Set up email sender and branding" (MEDIUM) - these use unique markers to prevent duplicates on re-install</li>
       <li>Creates a welcome note (marker: <code>onboarding:welcome-note:v1</code>)</li>
-      <li>Keeps new installs on the free launch plan with no Shopify subscription required</li>
+      <li>Keeps new installs on the Free plan with no Shopify subscription required</li>
       <li>Auto-opens the onboarding drawer if: no active workflows AND no non-onboarding open tasks</li>
     </ul>
 

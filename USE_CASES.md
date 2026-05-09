@@ -12,7 +12,7 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 6. [Workflow Automation](#6-workflow-automation)
 7. [Integrations](#7-integrations)
 8. [Settings](#8-settings)
-9. [Free Launch Plan](#9-free-launch-plan)
+9. [Free Plan](#9-free-plan)
 10. [Activity History](#10-activity-history)
 11. [API Endpoints](#11-api-endpoints)
 12. [Edge Cases & Special Flows](#12-edge-cases--special-flows)
@@ -66,7 +66,7 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
   - "Connect Slack and Google Sheets" (HIGH priority)
   - "Set up email sender and branding" (MEDIUM priority)
 - A welcome note is created (marker: `onboarding:welcome-note:v1`).
-- Free launch access starts immediately after install; no Shopify subscription is required.
+- Free plan access starts immediately after install; no Shopify subscription is required.
 - Onboarding drawer auto-opens if: `activeWorkflowsCount === 0` AND `nonOnboardingOpenTasksCount === 0`.
 
 ### Edge Cases
@@ -283,7 +283,7 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 
 #### Action Eligibility Filtering:
 
-- Integrations (Email, Slack, Google Sheets) are included during free launch after setup.
+- Integrations (Email, Slack, Google Sheets) are included on the Free plan after setup.
 - Missing or invalid integration setup can make an action ineligible.
 - If ALL actions are filtered, workflow is marked `SKIPPED`.
 - Filtered actions are logged with reason: "setup" or another eligibility reason.
@@ -492,16 +492,16 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 #### Billing
 
 - View current plan and features.
-- Review free launch limits and included access.
-- Confirm no plan change action is required during launch.
+- Review Free plan limits and included access.
+- Confirm no plan change action is required on the Free plan.
 
 ---
 
-## 9. Free Launch Plan
+## 9. Free Plan
 
-### Launch Limits
+### Included Limits
 
-| Feature | FREE LAUNCH |
+| Feature | FREE PLAN |
 |---------|-------------|
 | Active workflows | 5 |
 | Workflow runs/month | 5,000 |
@@ -511,24 +511,23 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 | Google Sheets action | Included after setup |
 | Analytics | Included |
 
-**Note**: Free launch limits are environment-configurable via `APP_FREE_MODE_*` env vars and must be positive integers.
+**Note**: Free plan limits are environment-configurable via `APP_FREE_MODE_*` env vars and must be positive integers.
 
-### Launch Billing State
+### Billing State
 
-- `APP_BILLING_ENABLED=false` keeps the app in free launch mode.
-- The Billing page shows the current free plan and hides plan change buttons.
-- Direct billing POSTs are rejected with a free launch message.
-- No Shopify subscription or app charge is created.
+- The Billing page shows the Free plan and included limits.
+- Direct billing POSTs are rejected with a Free plan message.
+- No Shopify subscription or app charge is required.
 
 ### Plan Sync (syncShopPlanFromBilling)
 
-- Runtime entitlements resolve to free launch limits while billing enforcement is disabled.
-- Stored historical plan fields do not change launch-mode access.
+- Runtime entitlements resolve to Free plan limits.
+- Stored historical plan fields do not change Free plan access.
 
 ### Plan Change Flow
 
-- No merchant plan change is required during launch.
-- Plan management remains hidden until billing is reintroduced.
+- No merchant plan change is required on the Free plan.
+- Plan management is not needed for the Free plan.
 
 ---
 
@@ -564,9 +563,9 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 
 | Scenario | Behavior |
 |----------|----------|
-| Free launch mode enabled | Billing actions are hidden; launch integrations are available after setup |
-| Direct billing POST during launch | Request is rejected with a free launch message |
-| Historical plan value exists | Runtime entitlements still resolve to free launch limits |
+| Free plan active | Billing actions are unavailable; Free plan integrations are available after setup |
+| Direct billing POST on Free plan | Request is rejected with a Free plan message |
+| Historical plan value exists | Runtime entitlements still resolve to Free plan limits |
 | Plan limits from env vars are not positive integers | Default limits applied |
 | FREE_MODE (billing disabled) | App uses configured free-mode limits without billing |
 
@@ -701,7 +700,7 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 ## Verification Plan
 
 - Walk through each route in `app/routes/` and confirm each section of this doc is reflected.
-- Check `planLimits.ts` to confirm free launch limits match documented limits.
+- Check `planLimits.ts` to confirm Free plan limits match documented limits.
 - Run the workflow engine tests in `__tests__/` to confirm edge case behavior.
 - Install the app in a dev shop and trace the onboarding flow.
 - Trigger each integration (Slack, Email, Sheets) with a test workflow to verify error messages.
