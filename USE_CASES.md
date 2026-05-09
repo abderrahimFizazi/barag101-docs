@@ -516,15 +516,15 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 ### Billing State
 
 - The Billing page shows free access and included limits.
-- Plan change requests return a Free access message.
+- Billing action requests return a free-access message.
 - No Shopify subscription or app charge is required.
 
-### Plan Sync (syncShopPlanFromBilling)
+### Access Sync (syncShopPlanFromBilling)
 
 - Runtime entitlements resolve to included usage limits.
 - Stored historical access fields do not change free access.
 
-### Plan Change Flow
+### Billing Action Flow
 
 - No merchant billing action is required while free access is active.
 - Subscription management is not needed.
@@ -564,7 +564,7 @@ OpsPilot is an embedded Shopify app for automating store operations. It provides
 | Scenario | Behavior |
 |----------|----------|
 | Free access active | Included integrations are available after setup |
-| Plan change request | Request returns a Free access message |
+| Billing action request | Request returns a free-access message |
 | Historical access value exists | Runtime entitlements still resolve to included usage limits |
 | Usage limits from env vars are not positive integers | Default limits applied |
 | FREE_MODE (billing disabled) | App uses configured free-mode limits without billing |
