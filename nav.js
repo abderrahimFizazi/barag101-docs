@@ -101,7 +101,7 @@ var SEARCH_INDEX = [
   { title: 'Workflow Execution Logs', url: 'activity.html#workflow-execution-logs', section: 'Activity History', desc: 'See every workflow run with status, actions, and payload' },
   // FAQ
   { title: 'FAQ & Troubleshooting', url: 'faq.html', section: '', desc: 'Common questions about notes, tasks, workflows, and setup' },
-  { title: 'Workflow Not Triggering', url: 'faq.html#workflow-not-triggering', section: 'FAQ', desc: 'Check active status, conditions, trigger type, plan limits, and failures' },
+  { title: 'Workflow Not Triggering', url: 'faq.html#workflow-not-triggering', section: 'FAQ', desc: 'Check active status, conditions, trigger type, usage limits, and failures' },
   { title: 'Emails Not Being Sent', url: 'faq.html#emails-not-sent', section: 'FAQ', desc: 'Email integration, DNS verification, setup, deduplication' },
   { title: 'Paused Due to Failure', url: 'faq.html#paused-due-to-failure', section: 'FAQ', desc: 'Fix failed workflows and re-enable them' },
   // Advanced Troubleshooting

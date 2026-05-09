@@ -91,7 +91,7 @@
     <div class="section-hero">
       <h1>API Reference</h1>
       <div class="last-updated">Last updated on 10 April 2026</div>
-      <p>Technical reference for OpsPilot's API endpoints, authentication, webhooks, plan limits, and system behavior for developers and store administrators.</p>
+      <p>Technical reference for OpsPilot's API endpoints, authentication, webhooks, usage limits, and system behavior for developers and store administrators.</p>
     </div>
 
     <!-- Hero Showcase -->
@@ -113,7 +113,7 @@
           <img class="pro-card-img" src="images/settings/Screenshot%202026-04-08%20175929.png" alt="Settings page with integration configuration" loading="lazy" />
           <div class="pro-card-body">
             <div class="pro-card-label">Auth &amp; Rate Limits</div>
-            <p class="pro-card-desc">OAuth 2.0 flow, session management, Shopify API rate limits, and plan-based quotas.</p>
+            <p class="pro-card-desc">OAuth 2.0 flow, session management, Shopify API rate limits, and usage quotas.</p>
           </div>
         </div>
       </div>
@@ -204,10 +204,10 @@
       <div>All webhook payloads are verified using Shopify's HMAC signature before processing. Payloads larger than 50 KB are truncated to a summary snapshot before being stored in execution logs.</div>
     </div>
 
-    <h2 id="plan-limits">Plan Limits</h2>
+    <h2 id="plan-limits">Usage limits</h2>
 
     <table>
-      <thead><tr><th>Feature</th><th>FREE LAUNCH</th></tr></thead>
+      <thead><tr><th>Feature</th><th>Included Access</th></tr></thead>
       <tbody>
         <tr><td>Active workflows</td><td>5</td></tr>
         <tr><td>Workflow runs / month</td><td>5,000</td></tr>
@@ -219,7 +219,7 @@
       </tbody>
     </table>
 
-    <p>New shops use the Free plan limits above, and no Shopify subscription is required. Plan limits are enforced on every workflow execution - runs over the monthly limit are SKIPPED.</p>
+    <p>New shops use the included usage limits above, and no Shopify subscription is required. Usage limits are enforced on every workflow execution - runs over the monthly limit are SKIPPED.</p>
 
     <h2 id="edge-cases">Edge Cases &amp; Special Flows</h2>
 
@@ -251,9 +251,9 @@
         <tr><td>App already installed - user re-opens</td><td>Existing session reused; no new OAuth flow</td></tr>
         <tr><td>Uninstall webhook fires multiple times</td><td>Safe - checks if session exists before deleting</td></tr>
         <tr><td>User re-opens app after uninstall</td><td>Full OAuth flow restarts</td></tr>
-        <tr><td>Free plan active</td><td>All Free plan integrations are available after setup</td></tr>
-        <tr><td>Plan change request on Free plan</td><td>Request returns a Free plan message</td></tr>
-        <tr><td>Stored legacy plan from older data</td><td>Runtime entitlements resolve to the Free plan</td></tr>
+        <tr><td>Free access active</td><td>All included integrations are available after setup</td></tr>
+        <tr><td>Plan change request</td><td>Request returns a Free access message</td></tr>
+        <tr><td>Stored legacy access data</td><td>Runtime entitlements resolve to free access</td></tr>
       </tbody>
     </table>
 
@@ -287,7 +287,7 @@
     <ul>
       <li>Seeds two onboarding tasks: "Connect Slack and Google Sheets" (HIGH) and "Set up email sender and branding" (MEDIUM) - these use unique markers to prevent duplicates on re-install</li>
       <li>Creates a welcome note (marker: <code>onboarding:welcome-note:v1</code>)</li>
-      <li>Keeps new installs on the Free plan with no Shopify subscription required</li>
+      <li>Keeps new installs on free access with no Shopify subscription required.</li>
       <li>Auto-opens the onboarding drawer if: no active workflows AND no non-onboarding open tasks</li>
     </ul>
 
